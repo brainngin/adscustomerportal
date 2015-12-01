@@ -27,6 +27,7 @@ if (isset($_POST['submit'])) {
         }
     }
 
+    $dormID = array();
     $dormName = array();
     $dormAdd = array();
     $dormCap = array();
@@ -42,6 +43,7 @@ if (isset($_POST['submit'])) {
         if ($result->num_rows > 0) {
             // output data of each row
             while ($row = $result->fetch_assoc()) {
+                array_push($dormID, $row['dormID']);
                 array_push($dormName, $row['dormName']);
                 array_push($dormAdd, $row['dormAddress']);
                 array_push($dormCap, $row['maxCapacity'] - $row['currentCapacity']);
@@ -52,6 +54,7 @@ if (isset($_POST['submit'])) {
     }
 
     // Initializing Session
+    $_SESSION['dormID'] = $dormID;
     $_SESSION['dormName'] = $dormName;
     $_SESSION['dormAdd'] = $dormAdd;
     $_SESSION['dormPricing'] = $dormPricing;

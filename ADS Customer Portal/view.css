@@ -8,7 +8,8 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
     font-family: 'Open Sans', sans-serif;
-  padding-top: 50px;
+    padding-top: 50px;
+    background-color: #eee;
 }
 
 /*html, body {*/
@@ -24,7 +25,7 @@ body {
 
 .sub-header {
     padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #596360;
 }
 
 /*
@@ -42,6 +43,7 @@ body {
 }
 .main .page-header {
     margin-top: 0;
+    border-bottom: 1px solid #596360;
 }
 
 .page-header {
@@ -75,11 +77,6 @@ body {
     }
 }
 
-th {
-    color: #fff;
-    background-color: #596360;
-}
-
 .instruction {
     color: #E40673
 }
@@ -108,4 +105,9 @@ th {
     color: #fff;
     background-color: #596360;
     border: 1px solid #428bca;
+}
+
+.filterSearch {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #596360;
 }

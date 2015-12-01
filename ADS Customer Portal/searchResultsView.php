@@ -107,8 +107,6 @@ include('searchResults.php');
 
     <script type="text/javascript">
         $(document).ready(function() {
-//            $.fn.dataTable.moment( "DD-MM-YYYY" );
-
 //            if(permissions == "all" || permissions == "owner"){
 //                buttons.splice(4,0,{
 //                    "sExtends":    "viewBarcode",
@@ -116,47 +114,7 @@ include('searchResults.php');
 //                });
 //            }
 
-            var dormName = <?php echo json_encode($_SESSION['dormName']); ?>;
-            var dormAddress = <?php echo json_encode($_SESSION['dormAdd']); ?>;
-            var dormPricing = <?php echo json_encode($_SESSION['dormPricing']); ?>;
-            var dormCap = <?php echo json_encode($_SESSION['dormCap']); ?>;
-            var dormRating = <?php echo json_encode($_SESSION['dormRating']); ?>;
-
-            var table = $('#searchTable').DataTable({
-                dom:  '<"search">flrtip',
-//                columnDefs: [
-//                    {
-//                        targets: 0,
-//                        render: function (data, type, full, meta) {
-//                            if(full['TS_'+dormID].newStatus == null)
-//                                return '<a href="dormProfile.php?dormID='+dormID+'&pageName=dormDetailedView&wp='+full['TI_'+dormID].workPermit+'">'+data+'</a>';
-//                        }
-//                    }
-//                ],
-                order: [ 4, 'asc' ],
-                lengthMenu: [[10, 25, 50, 100, 250, -1], [10, 25, 50, 100, 250, "All"]],
-//                search: { search: searchText },
-
-                "fnInitComplete": function(oSettings, json) {
-                    tableFilter();
-                }
-            } );
-
-            for (var i = 0; i < dormName.length; i++) {
-                table.row.add([dormName[i], dormAddress[i], dormPricing[i], dormCap[i], dormRating[i]]).draw();
-
-//                    if (isExpiring(busInfo[i][2])) {
-//                        $(table.cell(tableRowCount, 3).node()).addClass('pinkHighlight');
-////                            $('td', table.row(tableRowCount)).eq(3).addClass('pinkHighlight');
-//                    }
-            }
-
-            $.fn.dataTable.ext.errMode = 'throw';
-
-//            if(screen.width > 1200)
-//                $("div.search").html('<img src="images/magnifier.png" class="col-md-offset-9" style="position:relative;top: 25px;">');
-//            else
-//                $("div.search").html('<img src="images/magnifier.png" class="col-md-offset-8" style="position:relative;top: 23px;">');
+            updateSearchResult();
 
             setInterval(function() {
 //                tableReload();}, 15000
@@ -175,9 +133,75 @@ include('searchResults.php');
 //                }, false);
 //            }
 
+            function updateSearchResult(){
+                var dormID = <?php echo json_encode($_SESSION['dormID']); ?>;
+                var dormName = <?php echo json_encode($_SESSION['dormName']); ?>;
+                var dormAddress = <?php echo json_encode($_SESSION['dormAdd']); ?>;
+                var dormPricing = <?php echo json_encode($_SESSION['dormPricing']); ?>;
+                var dormCap = <?php echo json_encode($_SESSION['dormCap']); ?>;
+                var dormRating = <?php echo json_encode($_SESSION['dormRating']); ?>;
+
+                var ul = document.getElementById("searchResultsMedia");
+
+                for(var i = 0; i < dormName.length; i++){
+                    var li = document.createElement("li");
+                    li.setAttribute("class", "list-group-item");
+
+                    var divLeft = document.createElement("div");
+                    divLeft.setAttribute("class", "media-left");
+
+                    var img = document.createElement("img");
+                    img.setAttribute("class", "media-object");
+                    img.setAttribute("src", "data/"+ dormID[i] +"/ss1.png");
+                    divLeft.appendChild(img);
+
+                    var divBody = document.createElement("div");
+                    divBody.setAttribute("class", "media-body");
+
+                    var h4 = document.createElement("h4");
+                    h4.setAttribute("class", "media-heading");
+                    h4.innerHTML = '<strong><a href="dormProfileView.php?dormID='+dormID[i]+'">'+dormName[i]+'</a></strong>';
+
+                    var span = document.createElement("span");
+                    span.innerHTML = '<br>Address: ' + String(dormAddress[i]).replace(/~/g, " ") + '<br>' +
+                    'Availability: ' + dormCap[i] + ' beds <br>' +
+                    'Rating: ' + dormRating[i] + '<br>';
+
+                    var bodyBottomDiv = document.createElement("div");
+                    bodyBottomDiv.setAttribute("style", "width: 65%;border-top: 1px solid #596360;position: absolute; bottom: 50px");
+
+                    var price = document.createElement("h4");
+                    price.setAttribute("style", "position: absolute; top: 5px; right: 130px");
+                    price.innerHTML = '<strong>Per Month: $' + dormPricing[i] + '</strong>';
+
+                    var button = document.createElement("button");
+                    button.setAttribute("type", "button");
+                    button.setAttribute("class", "btn btn-success");
+                    button.setAttribute("style", "position: absolute; top: 5px; right: 10px");
+                    button.setAttribute("onclick", "dormProfileViewPage(\"" + dormID[i] +"\");");
+                    button.appendChild(document.createTextNode("View Details"));
+
+                    bodyBottomDiv.appendChild(price);
+                    bodyBottomDiv.appendChild(button);
+
+                    divBody.appendChild(h4);
+                    divBody.appendChild(span);
+                    divBody.appendChild(bodyBottomDiv);
+
+                    li.appendChild(divLeft);
+                    li.appendChild(divBody);
+
+                    ul.appendChild(li);
+                }
+            }
+
             function tableFilter () {
             }
         } );
+
+        function dormProfileViewPage( dormID ){
+            location.href = "dormProfileView.php?dormID=" + dormID;
+        }
     </script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -193,23 +217,80 @@ include('searchResults.php');
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <form class="form-horizontal" role="form" action="searchResults.php" method="post">
+                <h4 style="padding-left: 20px;padding-top: 20px"> Search: </h4>
+                <div class="form-group" style="padding-left: 20px">
+                    <!--                    <label class="control-label col-sm-3 col-md-2" for="tenName1">Dormitories Search: </label>-->
+                    <div class="col-sm-3 col-md-2">
+                        <input type="text" class="form-control" name="searchField" id="searchField" placeholder="Search...">
+                    </div>
+
+                    <div class="col-sm-3 col-md-2">
+                        <input type="text" class="form-control" name="searchStartDate" id="searchStartDate" placeholder="Start Date" onmouseover="this.type = 'date'" onmouseout="this.type = 'text'">
+                    </div>
+
+                    <div class="col-sm-3 col-md-2">
+                        <input type="text" class="form-control" name="searchEndDate" id="searchEndDate" placeholder="End Date" onmouseover="this.type = 'date'" onmouseout="this.type = 'text'">
+                    </div>
+
+                    <div class="col-sm-3 col-md-2">
+                        <select class="form-control" name="locDropDown" id="locDropDown">
+                            <option value=""> Select an option...</option>
+                            <option> North</option>
+                            <option> South</option>
+                            <option> East</option>
+                            <option> West</option>
+                            <option> Central</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-3 col-md-2">
+                        <button type="submit" class="btn btn-success" name="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 class="page-header">
                 <span> Search Results</span>
             </h1>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <div class="table-responsive">
-                <table id="searchTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                    <thead>
-                    <tr>
-                        <th>Dormitory Name</th>
-                        <th>Address</th>
-                        <th>Pricing</th>
-                        <th>Availability</th>
-                        <th>Rating</th>
-                    </tr>
-                    </thead>
-                </table>
+            <div class="col-sm-4 col-md-3" style="display: inline-block">
+                <h2 class="sub-header">
+                    <span> Narrow your results: </span>
+                </h2>
+
+                <form class="form-horizontal" role="form" action="searchResults.php" method="post">
+                    <h4 style="padding-left: 20px;padding-top: 20px"> Dormitory Name: </h4>
+                    <div class="form-group filterSearch" style="padding-left: 20px">
+                        <div class="col-sm-12 col-md-12">
+                            <input type="text" class="form-control" name="filterDormName" id="filterDormName" placeholder="Enter dormitory name...">
+                        </div>
+                    </div>
+
+                    <h4 style="padding-left: 20px;padding-top: 20px"> Price Range: </h4>
+                    <div class="form-group filterSearch" style="padding-left: 20px">
+                        <div class="col-sm-12 col-md-12">
+                            <input type="text" class="form-control" name="filterPrice" id="filterPrice" placeholder="Enter price...">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="media-list col-sm-8 col-md-7">
+                <ul id="searchResultsMedia">
+                    <!--                    <li class="list-group-item list-group-item-info">-->
+                    <!--                        <div class="media-left">-->
+                    <!--                            <a href="#">-->
+                    <!--                                <img class="media-object" src="..." alt="...">-->
+                    <!--                            </a>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="media-body">-->
+                    <!--                            <h4 class="media-heading">Media heading</h4>-->
+                    <!--                            ...-->
+                    <!--                        </div>-->
+                    <!--                    </li>-->
+                </ul>
             </div>
         </div>
     </div>
