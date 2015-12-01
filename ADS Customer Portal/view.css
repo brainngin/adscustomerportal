@@ -1,0 +1,111 @@
+/*
+ * Base structure
+ */
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300);
+@import url("ADSColors.css");
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+    font-family: 'Open Sans', sans-serif;
+  padding-top: 50px;
+}
+
+/*html, body {*/
+    /*height: 100%;*/
+/*}*/
+/*.container-fluid {*/
+    /*height: 100%;*/
+/*}*/
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 20px;
+}
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+.main .page-header {
+    margin-top: 0;
+}
+
+.page-header {
+    text-align: center;
+    font-weight: bold;
+}
+
+.piechart {
+    padding-top: 10px;
+    width: 500px;
+    height: 300px;
+    position: relative;
+    left: 30%;
+}
+
+@media (min-width: 1200px) {
+    .linechart{
+        padding-top: 10px;
+        width: 1400px;
+        height: 600px;
+        position: relative;
+    }
+}
+
+@media (max-device-width: 1200px) {
+    .linechart {
+        padding-top: 10px;
+        width: 700px;
+        height: 400px;
+        position: relative;
+    }
+}
+
+th {
+    color: #fff;
+    background-color: #596360;
+}
+
+.instruction {
+    color: #E40673
+}
+
+/*Tab Panel */
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+    color: #fff;
+    background-color: #428bca;
+}
+
+.nav-tabs > li > a,
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus {
+    color: #555555;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    border-bottom-color: transparent;
+}
+
+.panel-body {
+    min-height: 480px;
+    max-height: 480px;
+    overflow-y: scroll;
+    color: #fff;
+    background-color: #596360;
+    border: 1px solid #428bca;
+}

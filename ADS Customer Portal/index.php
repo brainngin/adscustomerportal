@@ -37,7 +37,7 @@
 <script type="text/javascript">
     $(function(){
         $("#header").load("header.php");
-//        $("#footer").load("footer.html");
+        $("#footer").load("footer.php");
     });
 </script>
 
@@ -49,7 +49,7 @@
         <h1>Theme example</h1>
         <p>This is a template showcasing the optional theme stylesheet included in Bootstrap. Use it as a starting point to create something more unique by building on or modifying it.</p>
         <div class="searchBox">
-            <form class="form-horizontal" role="form" action="addTenantPhotos.php" method="post">
+            <form class="form-horizontal" role="form" action="searchResults.php" method="post">
                 <h4 style="padding-left: 20px;padding-top: 20px"> Search: </h4>
                 <div class="form-group" style="padding-left: 20px">
 <!--                    <label class="control-label col-sm-3 col-md-2" for="tenName1">Dormitories Search: </label>-->
@@ -58,15 +58,15 @@
                     </div>
 
                     <div class="col-sm-3 col-md-2">
-                        <input type="text" class="form-control" name="searchStartDate" id="searchStartDate" placeholder="Start Date" onmouseover="this.type = 'date'" onmouseout="this.type = 'text'" required>
+                        <input type="text" class="form-control" name="searchStartDate" id="searchStartDate" placeholder="Start Date" onmouseover="this.type = 'date'" onmouseout="this.type = 'text'">
                     </div>
 
                     <div class="col-sm-3 col-md-2">
-                        <input type="text" class="form-control" name="searchEndDate" id="searchEndDate" placeholder="End Date" onmouseover="this.type = 'date'" onmouseout="this.type = 'text'" required>
+                        <input type="text" class="form-control" name="searchEndDate" id="searchEndDate" placeholder="End Date" onmouseover="this.type = 'date'" onmouseout="this.type = 'text'">
                     </div>
 
                     <div class="col-sm-3 col-md-2">
-                        <select class="form-control" name="locDropDown" id="locDropDown" required>
+                        <select class="form-control" name="locDropDown" id="locDropDown">
                             <option value=""> Select an option...</option>
                             <option> North</option>
                             <option> South</option>
@@ -77,7 +77,7 @@
                     </div>
 
                     <div class="col-sm-3 col-md-2">
-                        <button type="submit" class="btn btn-success">Search</button>
+                        <button type="submit" class="btn btn-success" name="submit">Search</button>
                     </div>
                 </div>
             </form>
@@ -155,11 +155,7 @@
 
     <!-- /END THE FEATURETTES -->
 
-    <!-- FOOTER -->
-    <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2015 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-    </footer>
+    <div id="footer"></div>
 </div><!-- /.container -->
 </body>
 </html>

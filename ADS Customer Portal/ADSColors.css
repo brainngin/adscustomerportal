@@ -1,0 +1,46 @@
+/*Colors definition*/
+
+.greenHighlight {
+    font-weight: bold;
+    color: #429C40;
+}
+
+.redHighlight {
+    font-weight: bold;
+    color: #D9534F;
+}
+
+.pinkHighlight {
+    font-weight: bold;
+    color: #E40673;
+}
+
+.orangeHighlight {
+    font-weight: bold;
+    color: #F8A008;
+}
+
+.lightblueHighlight {
+    font-weight: bold;
+    color: #37A6D0;
+}
+
+.whiteHighlight {
+    font-weight: bold;
+    color: #FFFBCC;
+}
+
+.yellowHighlight {
+    font-weight: bold;
+    color: #ffff44;
+}
+
+.brownHighlight {
+    font-weight: bold;
+    color: #d77915;
+}
+
+.blackHighlight {
+    font-weight: bold;
+    color: #596360;
+}
