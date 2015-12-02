@@ -33,6 +33,8 @@ if (isset($_POST['submit'])) {
     $dormCap = array();
     $dormPricing = array();
     $dormRating = array();
+    $dormFacilities = array();
+    $dormFacText = array('Gym', 'Nearby Eating Places', 'Internet Cafe', 'Bicycle Rack', 'Nearby Shops');
 
     for ($i = 0; $i < count($ownerID); $i++) {
         $ownerDIID = "DI_" . $ownerID[$i];
@@ -49,9 +51,22 @@ if (isset($_POST['submit'])) {
                 array_push($dormCap, $row['maxCapacity'] - $row['currentCapacity']);
                 array_push($dormPricing, $row['pricingPerMonth']);
                 array_push($dormRating, $row['rating']);
+
+                $tempFacText = array();
+                $tempFac = str_split($row['facilities']);
+
+                for($j = 0; $j < count($tempFac); $j++){
+                    if($tempFac[$j] == '1'){
+                        array_push($tempFacText, $dormFacText[$j]);
+                    }
+                }
+
+                array_push($dormFacilities, $tempFacText);
             }
         }
     }
+
+
 
     // Initializing Session
     $_SESSION['dormID'] = $dormID;
@@ -60,6 +75,7 @@ if (isset($_POST['submit'])) {
     $_SESSION['dormPricing'] = $dormPricing;
     $_SESSION['dormCap'] = $dormCap;
     $_SESSION['dormRating'] = $dormRating;
+    $_SESSION['dormFacilities'] = $dormFacilities;
 
     header("Location: searchResultsView.php");
 

@@ -114,6 +114,7 @@ include('searchResults.php');
 //                });
 //            }
 
+            adjustWidth();
             updateSearchResult();
 
             setInterval(function() {
@@ -132,6 +133,12 @@ include('searchResults.php');
 //                    }
 //                }, false);
 //            }
+            function adjustWidth(){
+                if(screen.width < 1200){
+                    document.getElementById("searchResultsMediaDiv").className = "media-list col-sm-10 col-md-9";
+                    document.getElementById("filterDiv").className = "col-sm-12 col-md-12 main"
+                }
+            }
 
             function updateSearchResult(){
                 var dormID = <?php echo json_encode($_SESSION['dormID']); ?>;
@@ -140,6 +147,7 @@ include('searchResults.php');
                 var dormPricing = <?php echo json_encode($_SESSION['dormPricing']); ?>;
                 var dormCap = <?php echo json_encode($_SESSION['dormCap']); ?>;
                 var dormRating = <?php echo json_encode($_SESSION['dormRating']); ?>;
+                var dormFacilities = <?php echo json_encode($_SESSION['dormFacilities']); ?>;
 
                 var ul = document.getElementById("searchResultsMedia");
 
@@ -153,6 +161,9 @@ include('searchResults.php');
                     var img = document.createElement("img");
                     img.setAttribute("class", "media-object");
                     img.setAttribute("src", "data/"+ dormID[i] +"/ss1.png");
+
+                    if(screen.width < 1200)
+                        img.setAttribute("width", "200px");
                     divLeft.appendChild(img);
 
                     var divBody = document.createElement("div");
@@ -164,8 +175,73 @@ include('searchResults.php');
 
                     var span = document.createElement("span");
                     span.innerHTML = '<br>Address: ' + String(dormAddress[i]).replace(/~/g, " ") + '<br>' +
-                    'Availability: ' + dormCap[i] + ' beds <br>' +
-                    'Rating: ' + dormRating[i] + '<br>';
+                    'Availability: ' + dormCap[i] + ' beds <br>';
+
+                    var ratingDiv = document.createElement("div");
+                    ratingDiv.setAttribute("style", "position:absolute; top: 50px; right: 20px");
+
+                    var ratingSpan = document.createElement("span");
+                    ratingSpan.appendChild(document.createTextNode("Rating: "));
+
+                    var starRatingSpan = document.createElement("span");
+                    starRatingSpan.setAttribute("class", "starRating");
+
+                    for(var j = 5; j >= 1; j--){
+                        var input = document.createElement("input");
+                        input.setAttribute("id", "rating-"+dormID[i]+"-"+j);
+                        input.setAttribute("type", "radio");
+                        input.setAttribute("value", ""+j);
+                        input.setAttribute("name", "rating-"+dormID[i]);
+                        input.setAttribute("disabled", "true");
+
+                        var label = document.createElement("label");
+                        label.setAttribute("for", "rating-"+dormID[i]+"-"+j);
+                        label.appendChild(document.createTextNode(""+j));
+
+                        if(dormRating[i] == j)
+                            input.setAttribute("checked", "true");
+
+                        starRatingSpan.appendChild(input);
+                        starRatingSpan.appendChild(label);
+                    }
+
+                    var ratingText = document.createElement("h4");
+                    ratingText.setAttribute("class", "greenHighlight");
+                    ratingText.setAttribute("style", "position:relative;left: 30px");
+
+                    if(dormRating[i] == "1"){
+                        ratingText.appendChild(document.createTextNode("Cheap!"));
+                    }
+                    else if(dormRating[i] == "2"){
+                        ratingText.appendChild(document.createTextNode("Okay!"));
+                    }
+                    else if(dormRating[i] == "3"){
+                        ratingText.appendChild(document.createTextNode("Good!"));
+                    }
+                    else if(dormRating[i] == "4"){
+                        ratingText.appendChild(document.createTextNode("Very Good!"));
+                    }
+                    else if(dormRating[i] == "5"){
+                        ratingText.appendChild(document.createTextNode("Excellent!"));
+                    }
+
+                    ratingDiv.appendChild(ratingSpan);
+                    ratingDiv.appendChild(starRatingSpan);
+                    ratingDiv.appendChild(ratingText);
+
+                    var facilitiesDiv = document.createElement("div");
+                    facilitiesDiv.setAttribute("style", "position:absolute; bottom: 80px");
+
+                    var facilitiesText = document.createElement("h4");
+
+                    for(j = 0; j < dormFacilities[i].length; j++){
+                        img = document.createElement("img");
+                        img.setAttribute("src", "images/tickgreen.png");
+                        facilitiesText.appendChild(img);
+                        facilitiesText.appendChild(document.createTextNode(dormFacilities[i][j] + " "));
+                    }
+
+                    facilitiesDiv.appendChild(facilitiesText);
 
                     var bodyBottomDiv = document.createElement("div");
                     bodyBottomDiv.setAttribute("style", "width: 65%;border-top: 1px solid #596360;position: absolute; bottom: 50px");
@@ -186,6 +262,8 @@ include('searchResults.php');
 
                     divBody.appendChild(h4);
                     divBody.appendChild(span);
+                    divBody.appendChild(ratingDiv);
+                    divBody.appendChild(facilitiesDiv);
                     divBody.appendChild(bodyBottomDiv);
 
                     li.appendChild(divLeft);
@@ -250,12 +328,13 @@ include('searchResults.php');
                 </div>
             </form>
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    </div>
+
+    <div class="row">
+        <div id="filterDiv" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 class="page-header">
                 <span> Search Results</span>
             </h1>
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="col-sm-4 col-md-3" style="display: inline-block">
                 <h2 class="sub-header">
                     <span> Narrow your results: </span>
@@ -277,26 +356,16 @@ include('searchResults.php');
                     </div>
                 </form>
             </div>
-            <div class="media-list col-sm-8 col-md-7">
-                <ul id="searchResultsMedia">
-                    <!--                    <li class="list-group-item list-group-item-info">-->
-                    <!--                        <div class="media-left">-->
-                    <!--                            <a href="#">-->
-                    <!--                                <img class="media-object" src="..." alt="...">-->
-                    <!--                            </a>-->
-                    <!--                        </div>-->
-                    <!--                        <div class="media-body">-->
-                    <!--                            <h4 class="media-heading">Media heading</h4>-->
-                    <!--                            ...-->
-                    <!--                        </div>-->
-                    <!--                    </li>-->
-                </ul>
+            <div id="searchResultsMediaDiv" class="media-list col-sm-8 col-md-7">
+                <ul id="searchResultsMedia"></ul>
             </div>
         </div>
     </div>
 </div>
 
-<div id="footer"></div>
+<div class="container marketing">
+    <div id="footer"></div>
+</div>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
