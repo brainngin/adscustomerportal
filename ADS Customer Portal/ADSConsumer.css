@@ -1,0 +1,32 @@
+/*
+==================================================================================================================================
+==== Search Section
+==================================================================================================================================
+*/
+
+#background-area
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#background-area-subcontainers
+{
+
+}
+
+#search-area
+{
+    background-color: rgba(215, 215, 215, 0.8);
+    border-radius: 20px;
+
+    padding: 25px;
+}
+
+#search-button
+{
+    width: 100%;
+}
+
+
