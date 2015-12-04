@@ -24,12 +24,17 @@ body {
 }
 .main .page-header {
     margin-top: 0;
-    border-bottom: 1px solid #596360;
 }
 
 .page-header {
     text-align: center;
     font-weight: bold;
+    border-bottom: 1px solid #596360;
+}
+
+.jumbotron {
+    background-image: url('images/coverpage.jpg');
+    height: 300px;
 }
 
 .filterSearch {

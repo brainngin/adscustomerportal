@@ -20,7 +20,7 @@ include('searchResults.php');
     <!--<meta http-equiv="refresh" content="15">-->
     <link rel="icon" href="images/officiallogoblack.png">
 
-    <title>Search Results</title>
+    <title>Dormitories.sg</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -117,22 +117,6 @@ include('searchResults.php');
             adjustWidth();
             updateSearchResult();
 
-            setInterval(function() {
-//                tableReload();}, 15000
-            });
-
-//            function tableReload(){
-//                var tabletools = TableTools.fnGetInstance( table.table().node() );
-//                var selectedRows = tabletools.fnGetSelectedIndexes();
-//
-//                table.ajax.reload(function ( json ){
-//                    tableFilter();
-//
-//                    for(i = 0; i < selectedRows.length; i++){
-//                        tabletools.fnSelect( table.row(selectedRows[i]).node() );
-//                    }
-//                }, false);
-//            }
             function adjustWidth(){
                 if(screen.width < 1200){
                     document.getElementById("searchResultsMediaDiv").className = "media-list col-sm-10 col-md-9";
@@ -141,6 +125,7 @@ include('searchResults.php');
             }
 
             function updateSearchResult(){
+                var dormOwnerID = <?php echo json_encode($_SESSION['dormOwnerID']); ?>;
                 var dormID = <?php echo json_encode($_SESSION['dormID']); ?>;
                 var dormName = <?php echo json_encode($_SESSION['dormName']); ?>;
                 var dormAddress = <?php echo json_encode($_SESSION['dormAdd']); ?>;
@@ -254,7 +239,7 @@ include('searchResults.php');
                     button.setAttribute("type", "button");
                     button.setAttribute("class", "btn btn-success");
                     button.setAttribute("style", "position: absolute; top: 5px; right: 10px");
-                    button.setAttribute("onclick", "dormProfileViewPage(\"" + dormID[i] +"\");");
+                    button.setAttribute("onclick", "dormProfileViewPage(\"" + dormOwnerID[i] + "\",\"" + dormID[i] +"\");");
                     button.appendChild(document.createTextNode("View Details"));
 
                     bodyBottomDiv.appendChild(price);
@@ -272,21 +257,12 @@ include('searchResults.php');
                     ul.appendChild(li);
                 }
             }
-
-            function tableFilter () {
-            }
         } );
 
-        function dormProfileViewPage( dormID ){
-            location.href = "dormProfileView.php?dormID=" + dormID;
+        function dormProfileViewPage( ownerID, dormID ){
+            window.open("dormProfileView.php?ownerID=" + ownerID + "&dormID=" + dormID, "_blank");
         }
     </script>
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <!--<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>-->
-    <!--<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>-->
-    <!--[endif]-->
 </head>
 
 <body>
@@ -367,12 +343,5 @@ include('searchResults.php');
     <div id="footer"></div>
 </div>
 
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
-<!--<script src="bootstrap/js/bootstrap.min.js"></script>-->
-<!--&lt;!&ndash; IE10 viewport hack for Surface/desktop Windows 8 bug &ndash;&gt;-->
-<!--<script src="bootstrap/js/ie10-viewport-bug-workaround.js"></script>-->
 </body>
 </html>

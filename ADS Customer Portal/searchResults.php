@@ -1,4 +1,5 @@
 <?php
+include('ADSGlobals.php');
 session_start(); // Starting Session
 
 if (isset($_POST['submit'])) {
@@ -27,6 +28,7 @@ if (isset($_POST['submit'])) {
         }
     }
 
+    $dormOwnerID = array();
     $dormID = array();
     $dormName = array();
     $dormAdd = array();
@@ -34,7 +36,6 @@ if (isset($_POST['submit'])) {
     $dormPricing = array();
     $dormRating = array();
     $dormFacilities = array();
-    $dormFacText = array('Gym', 'Nearby Eating Places', 'Internet Cafe', 'Bicycle Rack', 'Nearby Shops');
 
     for ($i = 0; $i < count($ownerID); $i++) {
         $ownerDIID = "DI_" . $ownerID[$i];
@@ -51,6 +52,7 @@ if (isset($_POST['submit'])) {
                 array_push($dormCap, $row['maxCapacity'] - $row['currentCapacity']);
                 array_push($dormPricing, $row['pricingPerMonth']);
                 array_push($dormRating, $row['rating']);
+                array_push($dormOwnerID, $ownerID[$i]);
 
                 $tempFacText = array();
                 $tempFac = str_split($row['facilities']);
@@ -69,6 +71,7 @@ if (isset($_POST['submit'])) {
 
 
     // Initializing Session
+    $_SESSION['dormOwnerID'] = $dormOwnerID;
     $_SESSION['dormID'] = $dormID;
     $_SESSION['dormName'] = $dormName;
     $_SESSION['dormAdd'] = $dormAdd;
